@@ -18,7 +18,9 @@ export default function Page() {
   useEffect(() => {
     const storedHabits = JSON.parse(localStorage.getItem("habitList"));
 
-    setHabitList(storedHabits);
+    if (storedHabits !== null) {
+      setHabitList(storedHabits);
+    }
   }, [setHabitList]);
 
   useEffect(() => {
