@@ -7,15 +7,19 @@ import Input from "src/components/Input.js";
 import { useEffect } from "react";
 import { v4 as uuidv4 } from "uuid";
 
-export default function SkeletonPage() {
+export default function Page() {
   const [habitName, setHabitName] = useState("");
   const [frequency, setFrequency] = useState("day");
 
   const [howManyTimes, setHowManyTimes] = useState(1);
 
-  const storedHabits = JSON.parse(localStorage.getItem("habitList")) ?? [];
+  const [habitList, setHabitList] = useState([]);
 
-  const [habitList, setHabitList] = useState(storedHabits);
+  useEffect(() => {
+    const storedHabits = JSON.parse(localStorage.getItem("habitList"));
+
+    setHabitList(storedHabits);
+  }, [setHabitList]);
 
   useEffect(() => {
     localStorage.setItem("habitList", JSON.stringify(habitList));
