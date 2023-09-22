@@ -78,7 +78,7 @@ export default function Item({
           </div>
         </div>
       ) : (
-        <div className="flex-1 flex  gap-10 py-4 items-center justify-between">
+        <div className="flex-1 flex  gap-6 py-4 items-center justify-between">
           <div>
             {title} {howMany} per {repeat}
           </div>
