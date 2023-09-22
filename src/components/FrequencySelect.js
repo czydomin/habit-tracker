@@ -3,7 +3,7 @@ export default function FrequencySelect({ selectedValue, onSelectValue }) {
 
   return (
     <select
-      className="p-2"
+      className="p-2 w-full "
       value={selectedValue}
       onChange={(event) => {
         onSelectValue(event.target.value);

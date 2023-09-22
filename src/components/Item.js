@@ -24,9 +24,9 @@ export default function Item({
   const [updatedFreq, setUpdatedFreq] = useState(repeat);
 
   return (
-    <li className=" flex justify-between border border-1 h-20 items-center  w-2/3 px-2 bg-[#dfc4c1] text-[#795e5b] ">
+    <li className=" flex  border border-1 h-fit gap-4 items-center shadow-xl px-2 bg-[#dfc4c1] hover:bg-[#c8b0ad] text-[#795e5b] ">
       {isEditingMode === true ? (
-        <div className="flex gap-4 ">
+        <div className="flex gap-2 py-4">
           <Input
             value={inputValue}
             onChange={(updatedValue) => {
@@ -34,74 +34,79 @@ export default function Item({
             }}
             placeholder={""}
             type={"text"}
-            className={"p-2"}
+            className={"p-2 w-40"}
           />
-          <Input
-            value={updatedNumber}
-            onChange={(newUpdatedNumber) => {
-              setUpdatedNumber(newUpdatedNumber);
-            }}
-            type={"number"}
-            min={"1"}
-            className={"w-8"}
-          />
+          <div className="flex gap-2">
+            <Input
+              value={updatedNumber}
+              onChange={(newUpdatedNumber) => {
+                setUpdatedNumber(newUpdatedNumber);
+              }}
+              type={"number"}
+              min={"1"}
+              className={"w-8"}
+            />
 
-          <FrequencySelect
-            selectedValue={updatedFreq}
-            onSelectValue={(value) => {
-              setUpdatedFreq(value);
-            }}
-          />
-          <div className="flex gap-2 ">
-            <button
-              onClick={() => {
-                setIsEditingMode(false);
+            <FrequencySelect
+              selectedValue={updatedFreq}
+              onSelectValue={(value) => {
+                setUpdatedFreq(value);
               }}
-            >
-              <Cross2Icon className="h-5 w-5 text-red-600" />
-            </button>
-            <button
-              onClick={() => {
-                if (updatedNumber <= 0) {
-                  alert("You cannot set negative number");
-                  return;
-                }
-                setIsEditingMode(false);
-                onConfirm(inputValue, updatedNumber, updatedFreq);
-              }}
-            >
-              <CheckIcon className="h-5 w-5 text-green-500" />
-            </button>
+            />
+
+            <div className="flex gap-2 ">
+              <button
+                onClick={() => {
+                  setIsEditingMode(false);
+                }}
+              >
+                <Cross2Icon className="h-5 w-5 text-red-600" />
+              </button>
+              <button
+                onClick={() => {
+                  if (updatedNumber <= 0) {
+                    alert("You cannot set negative number");
+                    return;
+                  }
+                  setIsEditingMode(false);
+                  onConfirm(inputValue, updatedNumber, updatedFreq);
+                }}
+              >
+                <CheckIcon className="h-5 w-5 text-green-500" />
+              </button>
+            </div>
           </div>
         </div>
       ) : (
-        <div className="flex ">
-          {title} {howMany} per {repeat}
+        <div className="flex-1 flex  gap-10 py-4 items-center justify-between">
+          <div>
+            {title} {howMany} per {repeat}
+          </div>
+          <div className="bg-[#e9d7d6] flex gap-2 p-2">
+            <input
+              checked={isDone}
+              onChange={() => {
+                onCheck();
+              }}
+              type="checkbox"
+            ></input>
+            <button
+              onClick={() => {
+                setIsEditingMode(true);
+              }}
+            >
+              <Pencil2Icon className="w-5 h-5 text-blue-500" />
+            </button>
+            <button
+              onClick={() => {
+                onDelete();
+              }}
+            >
+              <TrashIcon className="w-5 h-5 text-pink-700" />
+            </button>
+          </div>
         </div>
       )}
-      <div className="bg-[#e9d7d6] flex gap-4 p-2">
-        <input
-          checked={isDone}
-          onChange={() => {
-            onCheck();
-          }}
-          type="checkbox"
-        ></input>
-        <button
-          onClick={() => {
-            setIsEditingMode(true);
-          }}
-        >
-          <Pencil2Icon className="w-5 h-5 text-blue-500" />
-        </button>
-        <button
-          onClick={() => {
-            onDelete();
-          }}
-        >
-          <TrashIcon className="w-5 h-5 text-pink-700" />
-        </button>
-      </div>
     </li>
   );
 }

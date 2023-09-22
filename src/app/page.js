@@ -2,12 +2,14 @@
 
 import { useState } from "react";
 import Item from "src/components/Item.js";
-import FrequencySelect from "src/components/FrequencySelect.js";
-import Input from "src/components/Input.js";
 import { useEffect } from "react";
 import { v4 as uuidv4 } from "uuid";
+import { useAutoAnimate } from "@formkit/auto-animate/react";
+import Form from "@/components/Form";
 
 export default function Page() {
+  const [animationParent] = useAutoAnimate();
+
   const [habitName, setHabitName] = useState("");
   const [frequency, setFrequency] = useState("day");
 
@@ -35,7 +37,7 @@ export default function Page() {
       howMany: howManyTimes,
       repeat: frequency,
     };
-
+    console.log("here");
     if (newHabit.title === "") {
       alert("You cannot add empty note");
       return;
@@ -96,115 +98,86 @@ export default function Page() {
     }
   }, [habitList.length]);
 
-  //   useEffect(() => {
-  //     const doneList = habitList.every(checkIsDone);
-
-  //     function checkIsDone(habit) {
-  //       return habit.isDone === true;
-  //     }
-
-  //     if (doneList === true) {
-  //       alert("You've done all your habits");
-  //     }
-  //   }, [habitList]);
-
   return (
-    <div className="bg-[#CA9D99] h-screen flex flex-col ">
+    <div className="bg-[#CA9D99] h-screen w-screen flex  flex-col ">
       <div className="flex flex-col items-center">
-        <h1 className="py-10 text-7xl tracking-widest text-[#503e3d]">
+        <h1 className="py-10  text-5xl md:text-7xl tracking-widest text-[#503e3d]">
           Habit tracker
         </h1>
-        <div className="flex items-center gap-4">
-          <Input
-            value={habitName}
-            onChange={(newHabitName) => {
-              setHabitName(newHabitName);
-            }}
-            type={"text"}
-            placeholder={"write here..."}
-            className={"p-2"}
-          />
 
-          <div className="flex items-center gap-4">
-            <span>Repeat every</span>
-            <Input
-              value={howManyTimes}
-              onChange={(updatedHowManyTimes) => {
-                setHowManyTimes(updatedHowManyTimes);
-              }}
-              type={"number"}
-              min={"1"}
-              className={"p-2"}
-            />
-
-            <FrequencySelect
-              selectedValue={frequency}
-              onSelectValue={(newValue) => {
-                setFrequency(newValue);
-              }}
-            />
-            <button
-              className="bg-[#795e5b] text-[#dfc4c1] py-4 px-20 rounded  my-4"
-              onClick={handleClick}
-            >
-              Add
-            </button>
-          </div>
-        </div>
+        <Form
+          value={habitName}
+          onChange={(newHabitName) => {
+            setHabitName(newHabitName);
+          }}
+          FreqValue={howManyTimes}
+          FreqOnChange={(updatedHowManyTimes) => {
+            setHowManyTimes(updatedHowManyTimes);
+          }}
+          selectedValue={frequency}
+          onSelectValue={(newValue) => {
+            setFrequency(newValue);
+          }}
+          onClick={handleClick}
+        />
       </div>
-      <div className="flex justify-between ">
-        <div className="flex flex-col w-full flex-1 gap-4 items-center">
+      <div className="flex flex-col md:flex-row  gap-4 ">
+        <div className="flex  flex-col  flex-1 gap-4 items-center ">
           <h1 className=" text-2xl tracking-widest text-[#503e3d]">To do</h1>
-          {habitList
-            .filter((habit) => habit.isDone === false)
-            .map((habit) => {
-              return (
-                <Item
-                  key={habit.id}
-                  title={habit.title}
-                  isDone={habit.isDone}
-                  howMany={habit.howMany}
-                  repeat={habit.repeat}
-                  onDelete={() => handleOnDelete(habit.id)}
-                  onCheck={() => handleOnCheck(habit.id)}
-                  onConfirm={(updatedTitle, updatedNumber, updatedFreq) =>
-                    handleOnConfirm(
-                      updatedTitle,
-                      updatedNumber,
-                      updatedFreq,
-                      habit.id
-                    )
-                  }
-                />
-              );
-            })}
+          <ul className="flex flex-col gap-2" ref={animationParent}>
+            {habitList
+              .filter((habit) => habit.isDone === false)
+              .map((habit) => {
+                return (
+                  <Item
+                    key={habit.id}
+                    title={habit.title}
+                    isDone={habit.isDone}
+                    howMany={habit.howMany}
+                    repeat={habit.repeat}
+                    onDelete={() => handleOnDelete(habit.id)}
+                    onCheck={() => handleOnCheck(habit.id)}
+                    onConfirm={(updatedTitle, updatedNumber, updatedFreq) =>
+                      handleOnConfirm(
+                        updatedTitle,
+                        updatedNumber,
+                        updatedFreq,
+                        habit.id
+                      )
+                    }
+                  />
+                );
+              })}
+          </ul>
         </div>
 
-        <div className="flex flex-col w-full flex-1 gap-4 items-center">
+        <div className="flex flex-col  flex-1 gap-4 items-center ">
           <h1 className=" text-2xl tracking-widest text-[#503e3d]">Done</h1>
-          {habitList
-            .filter((habit) => habit.isDone === true)
-            .map((habit) => {
-              return (
-                <Item
-                  key={habit.id}
-                  title={habit.title}
-                  isDone={habit.isDone}
-                  howMany={habit.howMany}
-                  repeat={habit.repeat}
-                  onDelete={() => handleOnDelete(habit.id)}
-                  onCheck={() => handleOnCheck(habit.id)}
-                  onConfirm={(updatedTitle, updatedNumber, updatedFreq) =>
-                    handleOnConfirm(
-                      updatedTitle,
-                      updatedNumber,
-                      updatedFreq,
-                      habit.id
-                    )
-                  }
-                />
-              );
-            })}
+          <ul className="flex flex-col gap-2" ref={animationParent}>
+            {habitList
+              .filter((habit) => habit.isDone === true)
+              .map((habit) => {
+                return (
+                  <Item
+                    key={habit.id}
+                    title={habit.title}
+                    isDone={habit.isDone}
+                    howMany={habit.howMany}
+                    repeat={habit.repeat}
+                    onDelete={() => handleOnDelete(habit.id)}
+                    onCheck={() => handleOnCheck(habit.id)}
+                    onConfirm={(updatedTitle, updatedNumber, updatedFreq) =>
+                      handleOnConfirm(
+                        updatedTitle,
+                        updatedNumber,
+                        updatedFreq,
+                        habit.id
+                      )
+                    }
+                  />
+                );
+              })}
+          </ul>
         </div>
       </div>
     </div>
