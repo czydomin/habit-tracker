@@ -99,7 +99,7 @@ export default function Page() {
   }, [habitList.length]);
 
   return (
-    <div className="bg-[#CA9D99] h-full w-full py-4 flex  flex-col ">
+    <div className="min-h-screen bg-[#CA9D99] w-full py-4 flex  flex-col ">
       <div className="flex flex-col items-center">
         <h1 className="py-10  text-5xl md:text-7xl tracking-widest text-[#503e3d]">
           Habit tracker
